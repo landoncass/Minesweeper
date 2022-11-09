@@ -62,12 +62,23 @@ export function App() {
     }
   }
 
+  let header = 'Minesweeper'
+
+  if (game.state === 'won') {
+    header = 'You won!'
+  } else if (game.state === 'lost') {
+    header = 'You lost! Play again?'
+  } else if (game.state === 'playing') {
+    header = 'You are playing Minesweeper'
+  } else if (game.state === 'new') {
+    header = 'Make your first move'
+  }
   return (
     <div>
       <div className="game">
-        <h1>Minesweeper Game {game.id}</h1>
+        <h1>{header}</h1>
         <p>
-          <button onClick={handleNewGame}>New Game</button>
+          <button onClick={handleNewGame}>Press to start new game</button>
         </p>
         <table>
           <tbody>
