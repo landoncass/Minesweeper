@@ -62,6 +62,48 @@ export function App() {
     }
   }
 
+  async function handleEasyGame() {
+    const response = await fetch(
+      'https://minesweeper-api.herokuapp.com/games/{0}',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+      }
+    )
+
+    if (response.ok) {
+      const newGameState = await response.json()
+
+      setGame(newGameState)
+    }
+  }
+
+  async function handleMediumGame() {
+    const response = await fetch('https://minesweeper-api.herokuapp.com/1/', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+    })
+
+    if (response.ok) {
+      const newGameState = await response.json()
+
+      setGame(newGameState)
+    }
+  }
+
+  async function handleHardGame() {
+    const response = await fetch('https://minesweeper-api.herokuapp.com/2/', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+    })
+
+    if (response.ok) {
+      const newGameState = await response.json()
+
+      setGame(newGameState)
+    }
+  }
+
   let header = 'Minesweeper'
 
   if (game.state === 'won') {
@@ -74,12 +116,20 @@ export function App() {
     header = 'Make your first move'
   }
   return (
-    <div>
-      <div className="game">
+    <div className="gamePlay">
+      <div className="header">
         <h1>{header}</h1>
+        <h4>Choose the level of difficulty you'd like to play</h4>
         <p>
-          <button onClick={handleNewGame}>Press to start new game</button>
+          <button onClick={handleEasyGame}>Easy</button>
+          <button onClick={handleMediumGame}>Medium</button>
+          <button onClick={handleHardGame}>Hard</button>
         </p>
+        <p>
+          <button onClick={handleNewGame}>Click to Start game</button>
+        </p>
+      </div>
+      <div className="game">
         <table>
           <tbody>
             {game.board.map((row, y) => (
