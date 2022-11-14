@@ -1,5 +1,5 @@
 :root {
-  font: 16px / 1 sans-serif;
+  font: 20px / 1 sans-serif;
 }
 html {
   height: 100%;
@@ -43,4 +43,6 @@ table {
 
 td {
   border: 2px solid black;
+  padding: 20px;
+  border-collapse: collapse;
 }
