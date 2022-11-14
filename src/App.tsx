@@ -19,6 +19,14 @@ export function App() {
   })
 
   async function handleLeftClick(row: number, col: number) {
+    if (
+      game.id === null ||
+      game.state === 'won' ||
+      game.state === 'lost' ||
+      game.board[row][col] !== ' '
+    ) {
+      return
+    }
     const url = `https://minesweeper-api.herokuapp.com/games/${game.id}/check`
 
     const body = { row, col }
@@ -33,6 +41,14 @@ export function App() {
   }
 
   async function handleRightClick(row: number, col: number) {
+    if (
+      game.id === null ||
+      game.state === 'won' ||
+      game.state === 'lost' ||
+      game.board[row][col] !== ' '
+    ) {
+      return
+    }
     const url = `https://minesweeper-api.herokuapp.com/games/${game.id}/flag`
 
     const body = { row, col }
@@ -64,7 +80,7 @@ export function App() {
 
   async function handleEasyGame() {
     const response = await fetch(
-      'https://minesweeper-api.herokuapp.com/games/{0}',
+      'https://minesweeper-api.herokuapp.com/games/0',
       {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
