@@ -80,7 +80,7 @@ export function App() {
 
   async function handleEasyGame() {
     const response = await fetch(
-      'https://minesweeper-api.herokuapp.com/games/0',
+      'https://minesweeper-api.herokuapp.com/games?difficulty=0',
       {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -95,10 +95,13 @@ export function App() {
   }
 
   async function handleMediumGame() {
-    const response = await fetch('https://minesweeper-api.herokuapp.com/1/', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-    })
+    const response = await fetch(
+      'https://minesweeper-api.herokuapp.com/games?difficulty=1',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+      }
+    )
 
     if (response.ok) {
       const newGameState = await response.json()
@@ -108,10 +111,13 @@ export function App() {
   }
 
   async function handleHardGame() {
-    const response = await fetch('https://minesweeper-api.herokuapp.com/2/', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-    })
+    const response = await fetch(
+      'https://minesweeper-api.herokuapp.com/games?difficulty=2',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+      }
+    )
 
     if (response.ok) {
       const newGameState = await response.json()
@@ -141,9 +147,6 @@ export function App() {
           <button onClick={handleMediumGame}>Medium</button>
           <button onClick={handleHardGame}>Hard</button>
         </p>
-        <p>
-          <button onClick={handleNewGame}>Click to Start game</button>
-        </p>
       </div>
       <div className="game">
         <table>
@@ -152,6 +155,9 @@ export function App() {
               <tr>
                 {row.map((col, x) => (
                   <td
+                    // className={
+                    //   game.board[row][col] === ' ' ? undefined : 'taken'
+                    // }
                     onClick={() => handleLeftClick(y, x)}
                     onContextMenu={(e) => {
                       e.preventDefault()
