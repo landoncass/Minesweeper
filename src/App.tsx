@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 export function App() {
@@ -17,6 +17,26 @@ export function App() {
     state: null,
     mines: null,
   })
+
+  useEffect(() => {
+    //
+    ;(async () => {
+      const gameID = localStorage.getItem('gameID')
+      console.log({ gameID })
+      if (gameID) {
+        const response = await fetch(
+          `https://minesweeper-api.herokuapp.com/games/${gameID}`
+        )
+        setGame(await response.json())
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (game.id) {
+      localStorage.setItem('gameID', game.id)
+    }
+  }, [game.id])
 
   async function handleLeftClick(row: number, col: number) {
     if (
@@ -62,57 +82,9 @@ export function App() {
     setGame(await response.json())
   }
 
-  async function handleNewGame() {
+  async function handleNewGame(difficulty: number) {
     const response = await fetch(
-      'https://minesweeper-api.herokuapp.com/games',
-      {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-      }
-    )
-
-    if (response.ok) {
-      const newGameState = await response.json()
-
-      setGame(newGameState)
-    }
-  }
-
-  async function handleEasyGame() {
-    const response = await fetch(
-      'https://minesweeper-api.herokuapp.com/games?difficulty=0',
-      {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-      }
-    )
-
-    if (response.ok) {
-      const newGameState = await response.json()
-
-      setGame(newGameState)
-    }
-  }
-
-  async function handleMediumGame() {
-    const response = await fetch(
-      'https://minesweeper-api.herokuapp.com/games?difficulty=1',
-      {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-      }
-    )
-
-    if (response.ok) {
-      const newGameState = await response.json()
-
-      setGame(newGameState)
-    }
-  }
-
-  async function handleHardGame() {
-    const response = await fetch(
-      'https://minesweeper-api.herokuapp.com/games?difficulty=2',
+      `https://minesweeper-api.herokuapp.com/games?difficulty=${difficulty}`,
       {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -143,21 +115,23 @@ export function App() {
         <h1>{header}</h1>
         <h4>Choose the level of difficulty you'd like to play</h4>
         <p>
-          <button onClick={handleEasyGame}>Easy</button>
-          <button onClick={handleMediumGame}>Medium</button>
-          <button onClick={handleHardGame}>Hard</button>
+          <button onClick={() => handleNewGame(0)}>Easy</button>
+          <button onClick={() => handleNewGame(1)}>Medium</button>
+          <button onClick={() => handleNewGame(2)}>Hard</button>
         </p>
       </div>
       <div className="game">
         <table>
           <tbody>
             {game.board.map((row, y) => (
-              <tr>
+              <tr key={y}>
                 {row.map((col, x) => (
                   <td
+                    key={x}
                     // className={
                     //   game.board[row][col] === ' ' ? undefined : 'taken'
                     // }
+
                     onClick={() => handleLeftClick(y, x)}
                     onContextMenu={(e) => {
                       e.preventDefault()
