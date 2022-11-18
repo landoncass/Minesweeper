@@ -115,6 +115,42 @@ export function App() {
     header2 = `Game #${game.id} has ${game.mines} mines`
   }
 
+  function transformClassName(value: string) {
+    if (value === 'F') {
+      // RETURN AN ICON FOR A FLAG
+      return 'cell-flag'
+    }
+
+    if (value === '_') {
+      //return an empty square
+      return 'cell-free'
+    }
+
+    if (value === '*') {
+      //return bomb icon
+      return 'cell-bomb'
+    }
+    return undefined
+  }
+
+  function transformIcon(value: string) {
+    if (value === 'F') {
+      // RETURN AN ICON FOR A FLAG
+      return <i className="fa-regular fa-flag"></i>
+    }
+
+    if (value === '_') {
+      //return an empty square
+      return ' '
+    }
+
+    if (value === '*') {
+      //return bomb icon
+      return <i className="fa-solid fa-bomb"></i>
+    }
+    return value
+  }
+
   return (
     <div className="gamePlay">
       <div className="header">
@@ -137,14 +173,14 @@ export function App() {
                     // className={
                     //   game.board[row][col] === ' ' ? undefined : 'taken'
                     // }
-
+                    className={transformClassName(col)}
                     onClick={() => handleLeftClick(y, x)}
                     onContextMenu={(e) => {
                       e.preventDefault()
                       handleRightClick(y, x)
                     }}
                   >
-                    {col}
+                    {transformIcon(col)}
                   </td>
                 ))}
               </tr>
